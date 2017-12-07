@@ -9,6 +9,7 @@
 # mv
 
 import os
+import sys
 
 
 MSG_HELLO = "REPL Command Processing"
@@ -22,6 +23,7 @@ COMMAND_EXIT = "exit"
 COMMAND_HELP = "help"
 COMMAND_LS = "ls"
 COMMAND_CD = "cd"
+COMMAND_CAT = "cat"
 
 env_current_command = ""
 env_current_directory = "."
@@ -51,6 +53,7 @@ def command_help(cmd):
     exit
     ls
     cd
+    cat
     help
     """)
 
@@ -83,12 +86,23 @@ def command_cd(cmd):
     int_prompt_create(env_current_directory)
 
 
+def command_cat(cmd):
+    ERR_FILENOTFOUND = "ERROR: File not found"
+    try:
+        out_file = open(cmd[1], "r")
+        for l in out_file.readlines():
+            sys.stdout.write(l)
+        out_file.close()
+    except Exception:
+        print(ERR_FILENOTFOUND)
+
+
 #REPL Body
 
 print (MSG_HELLO)
 int_init_env()
 while env_current_command != COMMAND_EXIT:
-
+    ERR_COMMANDNOTFOUD = "ERROR: Command not found"
     env_current_command = input(PROMPT)
     cmd = env_current_command.split(" ")
 
@@ -100,9 +114,13 @@ while env_current_command != COMMAND_EXIT:
         command_ls(cmd)
     elif cmd[0] == COMMAND_CD:
         command_cd(cmd)
+    elif cmd[0] == COMMAND_CAT:
+        command_cat(cmd)
+    else:
+        print(ERR_COMMANDNOTFOUD)
 
 
-print (MSG_EXIT)
+print(MSG_EXIT)
 exit(0)
 
 
