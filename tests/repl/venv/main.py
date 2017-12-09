@@ -11,22 +11,8 @@
 import os
 import sys
 
-
-MSG_HELLO = "REPL Command Processing"
-MSG_EXIT = "Exit from REPL Command Processing"
-
-PROMPT_PRE = "$> "
-PROMPT_POST = " >> "
-PROMPT = PROMPT_PRE + PROMPT_POST
-
-COMMAND_EXIT = "exit"
-COMMAND_HELP = "help"
-COMMAND_LS = "ls"
-COMMAND_CD = "cd"
-COMMAND_CAT = "cat"
-
-env_current_command = ""
-env_current_directory = "."
+from messages import *
+from environment import *
 
 
 def int_current_directory_set(dir):
@@ -76,7 +62,6 @@ def command_ls(cmd):
 
 
 def command_cd(cmd):
-    ERR_WRONGDIR = "ERROR: Could not change the directory"
     global env_current_directory
     try:
         os.chdir(os.path.join(env_current_directory, cmd[1]))
@@ -87,7 +72,6 @@ def command_cd(cmd):
 
 
 def command_cat(cmd):
-    ERR_FILENOTFOUND = "ERROR: File not found"
     try:
         out_file = open(cmd[1], "r")
         for l in out_file.readlines():
@@ -102,7 +86,6 @@ def command_cat(cmd):
 print (MSG_HELLO)
 int_init_env()
 while env_current_command != COMMAND_EXIT:
-    ERR_COMMANDNOTFOUD = "ERROR: Command not found"
     env_current_command = input(PROMPT)
     cmd = env_current_command.split(" ")
 
